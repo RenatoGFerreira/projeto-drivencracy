@@ -10,3 +10,13 @@ export async function postPoll(req, res) {
     return res.status(500).send(err.message);
   }
 }
+
+
+export async function getPolls(req, res){
+    try{
+        const polls = await db.collection("polls").find().toArray()
+        return res.status(201).send(polls)
+    }catch(err){
+        return res.status(500).send(err.message)
+    }
+}
