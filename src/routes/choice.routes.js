@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { postChoice } from "../controllers/choice.controllers.js";
-import { choiceValidateSchema } from "../middlewares/choiceValidate.middleware.js";
+import {postChoice, getPollOptions} from "../controllers/choice.controllers.js"
+import {choiceSchemaValidate} from "../middlewares/choiceValidate.middleware.js"
+const choiceRouter = Router()
 
-const router = Router()
+choiceRouter.post("/choice", choiceSchemaValidate, postChoice)
+choiceRouter.get("/poll/:id/choice", getPollOptions)
 
-router.post("/choice", choiceValidateSchema, postChoice)
 
 
-export default router
+
+export default choiceRouter

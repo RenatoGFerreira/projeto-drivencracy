@@ -1,27 +1,24 @@
-import { pollSchema } from "../schemas/poll.schema.js";
-import dayjs from "dayjs";
+import dayjs from "dayjs"
 
-export async function pollValidateSchema(req, res, next){
+export default function validateSchema(schema){
+
+    return(req, res, next) =>{
     const poll = req.body
-    
-    const {error} = pollSchema.validate(poll, {abortEarly: false})
+    const validation = schema.validate(poll, { abortEarly: false})
 
-    if(error){
-        const errors = error.details.map((detail) => detail.message)
+    if(validation.error){
+        console.log(validation.error)
+        const errors = validation.error.details.map((detail) => detail.message)
         return res.status(422).send(errors)
     }
 
     if(!poll.expireAt){
-        res.locals.user = {
-            "title": poll.title,
-            "expireAt": dayjs().add(30, 'day').format('YYYY-MM-DD HH:mm')
-        }
-    }else{
-        res.locals.user ={
-            "title": poll.title,
-            "expireAt": poll.expireAt
-        }
+        const date = dayjs().add(30, 'day').format("YYYY-MM-DD HH:mm")
+        poll.expireAt = date
     }
 
-    next()
+    res.locals.poll = poll
+
+        next()
+    }
 }
