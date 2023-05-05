@@ -34,3 +34,8 @@ export async function choiceSchemaValidate(req, res, next){
 
     next()
 }
+
+
+export async function voteSchemaValidate(req, res, next){
+    
+}
