@@ -1,15 +1,11 @@
 import { db } from "../database/database.js";
-import dayjs from "dayjs";
 import { ObjectId } from "mongodb";
 
 export async function postChoice(req, res){
     const {title, pollId} = res.locals.choice
-    console.log(title, pollId)
-
     try{
         await db.collection("choices").insertOne({ title, pollId });
         res.status(201).send("Resposta criada com sucesso")
-
 
     }catch (err) {
         return res.status(500).send(err.message);
@@ -19,26 +15,25 @@ export async function postChoice(req, res){
 export async function getPollOptions(req, res){
     const id = req.params.id
 
-
     try{
-        const existChoices = await db.collection("choices").find({}).toArray()
-        const pollChoices = existChoices.filter((poll) => poll.pollId === id)
-        if (pollChoices.length === 0 ) return res.status(404).send("Enquete não encontrada!")
-        res.status(200).send(pollChoices)
+        const existPull = await db.collection("polls").findOne({_id: new ObjectId(id)})
+        console.log(existPull)
+        if(!existPull) return res.status(404).send("Enquete inexistente.")
+        
+        const existChoices = await db.collection("choices").find({pollId:id}).toArray()
+        console.log(existChoices)
+
+        if (existChoices.length === 0 ) return res.status(200).send("Nenhuma opção de voto encontrado para esta enquete!")
+    
+        res.status(200).send(existChoices)
     }catch (err) {
         return res.status(500).send(err.message);
-      }
+    }
 }
 
-
 export async function voteId(req, res){
-    const choicebyId = req.params
-    const currentDate = dayjs(new Date()).format("YYYY-MM-DD HH:mm")
-
-    const vote = {
-        createdAt: currentDate,
-        choiceId: choicebyId,
-    }
+    const vote = res.locals.vote
+    console.log(`vote ${vote}`)
 
     try{
         await db.collection("votes").insertOne(vote)

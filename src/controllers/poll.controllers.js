@@ -5,7 +5,6 @@ dayjs.extend(customParseFormat)
 
 export async function postPoll(req, res){
     const poll = res.locals.poll
-    console.log(poll)
 
     try{
         await db.collection("polls").insertOne(poll);

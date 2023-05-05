@@ -6,6 +6,7 @@ const pollRouter = Router()
 
 pollRouter.post("/poll", validateSchema(pollSchema), postPoll)
 pollRouter.get("/poll", getPoll)
+pollRouter.get("/poll/:id/result")
 
 
 export default pollRouter
