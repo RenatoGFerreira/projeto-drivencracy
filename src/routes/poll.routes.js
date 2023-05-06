@@ -11,4 +11,3 @@ pollRouter.get("/poll/:id/result", showPollResult)
 
 export default pollRouter
 
-//db.choices.aggregate([{$sortByCount: "$pollId"}]).toArray()

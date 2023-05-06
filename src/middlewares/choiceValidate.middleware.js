@@ -7,11 +7,9 @@ import moment from "moment/moment.js"
 
 export async function choiceSchemaValidate(req, res, next){
     const {title, pollId} = req.body
-    console.log(`title: ${title}, poolId:${pollId}`)
 
     const validation = choiceSchema.validate({title, pollId}, { abortEarly: false})
     if(validation.error){
-        console.log(validation.error)
         const errors = validation.error.details.map((detail) => detail.message)
         return res.status(422).send(errors)
     }

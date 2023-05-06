@@ -7,7 +7,6 @@ export default function validateSchema(schema){
     const validation = schema.validate(poll, { abortEarly: false})
 
     if(validation.error){
-        console.log(validation.error)
         const errors = validation.error.details.map((detail) => detail.message)
         return res.status(422).send(errors)
     }
