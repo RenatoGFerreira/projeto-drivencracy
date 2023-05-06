@@ -23,3 +23,17 @@ export async function getPoll(req, res){
         return res.status(500).send(err.message)
     }
 }
+
+export async function showPollResult(req, res){
+    const pollId = req.params.id
+
+    const poll = await pollCollection.findOne({ _id: new ObjectId(pollId) })
+    if(!poll) return res.status(404).send("Enquete inexistente!")
+
+    
+    try{
+
+    }catch(err){
+        return res.status(500).send(err.message)
+    }
+}
